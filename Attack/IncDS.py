@@ -1,8 +1,12 @@
 import copy
 import time
 
-from iohelper import *
-from yelpFeatureExtraction import *
+from Utils.iohelper import *
+from Utils.yelpFeatureExtraction import *
+
+"""
+	The implementation of the IncDS attack.
+"""
 
 
 def compute_density(user_product_graph, product_user_graph, c, t):
@@ -13,7 +17,7 @@ def compute_density(user_product_graph, product_user_graph, c, t):
 	density = {}
 	# intialize the auxiliary graph
 	aux_user_graph = copy.deepcopy(user_product_graph)
-	aux_user_graph = copy.deepcopy(product_user_graph)
+	aux_prod_graph = copy.deepcopy(product_user_graph)
 	for u in c:
 		aux_user_graph[u].append((t, 1, -1, '2012-06-01'))
 		aux_prod_graph[t].append((u, 1, -1, '2012-06-01'))

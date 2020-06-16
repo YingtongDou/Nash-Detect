@@ -1,13 +1,12 @@
-"""
-	Implement the fBox detector in the paper:
-		Spotting Suspicious Link Behavior with fBox- An Adversarial Perspective, ICDM'17
-"""
 import numpy as np
 from numpy.linalg import *
-
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import svds
 
+"""
+	Implement the fBox detector
+	Paper: Spotting Suspicious Link Behavior with fBox- An Adversarial Perspective, ICDM'17
+"""
 
 class fBox():
 	def __init__(self, user_product_graph):

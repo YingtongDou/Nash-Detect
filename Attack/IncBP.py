@@ -1,42 +1,42 @@
-import copy
-import itertools
 import time
 
-from gang import *
-from iohelper import *
-from yelpFeatureExtraction import *
+from Detector.gang import *
+from Utils.eval_helper import *
+from Utils.yelpFeatureExtraction import *
+
+"""
+	The implementation of the IncBP attack.
+"""
 
 
-def bp_evasion(user_product_graph, product_user_graph, priors, controlled_accounts, num_reviews, targets):
+def bp_evasion(user_product_graph, product_user_graph, priors, controlled_accounts, num_reviews, targets, feature_config):
 	"""
-
-	:param user_product_graph:
-	:param product_user_graph:
-	:param priors: priors[0] -  user_priors; priors[2] - prod_priors; priors[1] - review_priors
+	:param user_product_graph: key = user_id, value = list of review tuples
+	:param product_user_graph: key = product_id, value = list of review tuples
+	:param priors: priors[0] -  user_priors; priors[1] - review_priors; priors[2] - prod_priors
 	:param controlled_accounts: a set of controlled elite accounts
 	:param num_reviews: number of reviews needed for each target
 	:param targets: a set of target products
-	:return:
 	"""
 	count = 0 # new edge counter
 	added_edges = []
 	account_log = []
 	unique = 0 # selected unique accounts counter
-	mean_priors = [0.5, 0.5, 0.5]
 	t0 = time.time()
 
 	# feature and prior calculation
-	feature_suspicious_filename = 'feature_configuration.txt'
 	review_feature_list = ['RD', 'EXT', 'EXT', 'DEV', 'ETF', 'ISR']
 	user_feature_list = ['MNR', 'PR', 'NR', 'avgRD', 'BST', 'ERD', 'ETG']
 	product_feature_list = ['MNR', 'PR', 'NR', 'avgRD', 'ERD', 'ETG']
-	feature_config = load_feature_config(feature_suspicious_filename)
 	feature_extractor = FeatureExtractor()
 	UserFeatures, ProdFeatures, ReviewFeatures = feature_extractor.construct_all_features(user_product_graph, product_user_graph)
 	user_ground_truth, review_ground_truth = create_ground_truth(user_product_graph)
 
+	# normalize the priors for GANG
+	priors, mean_priors = nor_priors(priors)
+
 	# initiialize the GANG model
-	global_gang = gang(user_product_graph, product_user_graph, user_ground_truth, review_ground_truth,
+	global_gang = GANG(user_product_graph, product_user_graph, user_ground_truth,
 					   priors, mean_priors, 0.1, nor_flg=True, sup_flg=False)
 	
 	# run Linearized Belief Propagation with GANG
@@ -58,21 +58,7 @@ def bp_evasion(user_product_graph, product_user_graph, priors, controlled_accoun
 
 			# normalize the node priors to (0,1)
 			# if we normalize the prior, we need to set nor_flg to True for the gang model
-			ranked_upriors = [(user, new_upriors[user]) for user in new_upriors.keys()]
-			ranked_upriors = sorted(ranked_upriors, reverse=True, key=lambda x: x[1])
-			ranked_rpriors = [(user, new_rpriors[user]) for user in new_rpriors.keys()]
-			ranked_rpriors = sorted(ranked_rpriors, reverse=True, key=lambda x: x[1])
-			ranked_ppriors = [(user, new_ppriors[user]) for user in new_ppriors.keys()]
-			ranked_ppriors = sorted(ranked_ppriors, reverse=True, key=lambda x: x[1])
-			u_max, u_mean, u_min = ranked_upriors[0][1], ranked_upriors[int(len(ranked_upriors) / 2)][1], ranked_upriors[-1][1]
-			p_max, p_mean, p_min = ranked_ppriors[0][1], ranked_ppriors[int(len(ranked_ppriors) / 2)][1], ranked_ppriors[-1][1]
-			r_max, r_mean, r_min = ranked_rpriors[0][1], ranked_rpriors[int(len(ranked_rpriors) / 2)][1], ranked_rpriors[-1][1]
-			for i, p in priors[0].items():
-				priors[0][i] = (p - u_min) / (u_max - u_min)
-			for i, p in priors[2].items():
-				priors[2][i] = (p - p_min) / (p_max - p_min)
-			for i, p in priors[1].items():
-				priors[1][i] = (p - r_min) / (r_max - r_min)
+			priors, mean_priors = nor_priors(priors)
 
 			# update the global graph and global GANG model
 			for key, items in new_prod_graph.items():
@@ -99,12 +85,9 @@ def bp_evasion(user_product_graph, product_user_graph, priors, controlled_accoun
 		new_prod_graph = {}
 		new_prod_graph[target] = []
 
-		# the list saving the copies of the global GANGs for testing cost of adding each edge
-		test_gangs = list(itertools.repeat(copy.deepcopy(global_gang), len(controlled_accounts)))
-
 		# time counter
 		t1 = time.time()
-		print(str(t1 - t0))
+		print('attacking time for target {} is {}'.format(iter, str(t1 - t0)))
 
 		# select the accounts with minimum posteriors estimated by GANG
 		selected_accounts = [(account, global_posterior[int(account)]) for account in controlled_accounts]
@@ -120,7 +103,7 @@ def bp_evasion(user_product_graph, product_user_graph, priors, controlled_accoun
 			# count no. of new selected accounts
 			if added_account not in account_log:
 				unique += 1
-			print('Total number of selected unique accounts: %d' % (new))
+			print('Total number of selected unique accounts: %d' % (unique))
 			account_log.append(added_account)
 
 			# add the added edges to temporal new graph

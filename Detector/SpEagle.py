@@ -1,15 +1,12 @@
-"""
-	Implement SpEagle on a User-Review-Product graph.
-"""
-import pickle
-import sys
 from heapq import *
-
-sys.path.insert(0, '../Utils')
-from iohelper import *
-
 import numpy as np
 from scipy.special import logsumexp
+
+"""
+	Implement SpEagle on a User-Review-Product graph.
+	Paper: Collective Opinion Spam Detection: Bridging Review Networks and Metadata, KDD'15
+"""
+
 
 class myTuple():
 	def __init__(self, cost, node_id):
@@ -18,6 +15,7 @@ class myTuple():
 
 	def __lt__(self, other):
 		return self._cost < other._cost
+
 
 class Node(object):
 	""" a Node object represents a node on the graph (which is also a random variable).
@@ -63,10 +61,6 @@ class Node(object):
 
 		self._type = node_type
 
-	# if self._type == 'p' and self._name == 'p0':
-	#	print ('product %s initialized.' % self._name)
-	#	print (self._outgoing)
-
 	def add_neighbor(self, neighbor_node_id):
 		"""
 			add a neighboring node to this node; create out-going message from this node to the neighbor
@@ -102,9 +96,6 @@ class Node(object):
 		for n in self._neighbors:
 			self._outgoing[n].fill(0.0)
 
-	# if self._type == 'p' and self._name == 'p0':
-	#	print (self._outgoing)
-
 	def n_edges(self):
 		return len(self._neighbors)
 
@@ -128,7 +119,6 @@ class Node(object):
 		""" find the message sent from this node to the neighbor specified by neighbor_name """
 
 		# note that _outgoing is a dictionary with key = neighbor id and value = messages
-		# print(neighbor_name)
 		assert neighbor_name in self._outgoing, "the neighbor %s is not a neighbor of the node %s\n" % (
 		neighbor_name, self._name)
 
@@ -166,7 +156,6 @@ class Node(object):
 
 			# in the same order as self._neighbors
 			incoming.append(n.get_message_for(self._name))
-		# print (n.get_message_for(self._name))
 
 		return belief, incoming
 
@@ -192,24 +181,11 @@ class Node(object):
 		# go through each neighbor of the node
 		for j, n_id in enumerate(self._neighbors):
 
-			# if self._name == ('u6426', 'p188'):
-			#     print("total:")
-			#     print(total)
-			#     print("incoming:")
-			#     print(incoming)
 			# retrieve the actual neighboring node
 			n = all_nodes[n_id]
-			# if self._name == ('u6426', 'p188'):
-			#     print("n:")
-			#     print(n)
 
 			# log phi_i + \sum_{k~j} log m_ki
 			log_m_i = total - incoming[j]
-
-			# if self._name == ('11144', '42'):
-			#     print("log_m_i:")
-			#     print(log_m_i)
-
 
 			# note that the potential matrix depends on the edge type (write(user, review) or belong(review, product))
 			# edge_type can be (user-review), (review-product), (review-user) and (product-review)
@@ -217,42 +193,20 @@ class Node(object):
 
 			# log H, where H is symmetric and there is no need to transpose it
 			log_H = potentials[edge_type]
-			# if self._name == ('u6426', 'p188'):
-			#     print("log_H:")
-			#     print(log_H)
+
 			# \sum_y log_H(x,y) + log phi_i + sum_{k~j} log m_ki(y)
 			log_m_ij = logsumexp(log_H + np.tile(log_m_i.transpose(), (2, 1)), axis=1)
-
-			# if self._name == ('u11144', 'p42'):
-			# 	print("log_m_ij:")
-			# 	print(log_m_ij)
 
 			# normalize the message
 			log_Z = logsumexp(log_H + np.tile(log_m_i.transpose(), (2, 1)))
 
-			log_m_ij -= log_Z#
-
-			# if self._name == ('u11144', 'p42'):
-			# 	print("nor_log_m_ij:")
-			# 	print(log_m_ij)
-
-
-			#print (log_m_ij)
-			# print(m_ij)
-
-			# if normalize:
-			#	m_ij /= m_ij.sum()
-
-			# print('message from %d to %d: ' % (self._name, n._name))
-			# print(m_ij)
-			# print()
+			log_m_ij -= log_Z
 
 			# accumulate the difference
 			diff += np.sum(np.abs(self._outgoing[n._name] - log_m_ij))
 
 			# set the message from i to j
 			self._outgoing[n._name] = log_m_ij
-
 
 		# break
 		return diff
@@ -319,16 +273,6 @@ class SpEagle():
 						self._nodes[unique_p_id].add_local_neighbor(unique_review_id, message[unique_p_id])
 
 					self._nodes[unique_review_id] = review_node
-
-		# initialize the outgoing messages
-		#for node_id, node in self._nodes.items():
-			# if node_id == ('201', '0'):
-			#	print (node.get_neighbors())
-			# if node.get_name() == 'p0':
-			#	print ('encounter node 0')
-			# if node.get_name() == 'p0' and node.get_type() == 'p':
-			#	print ('initializing product 0 outgoing messages')
-		#    node.init_outgoing()
 
 	def add_new_data(self, new_user_product_graph, new_priors):
 		"""
@@ -471,7 +415,6 @@ class SpEagle():
 							heappush(q, myTuple(next, n))
 		return None
 
-
 	def run_bp(self, start_iter = 0, max_iters = -1, early_stop_at = 1, tol = 1e-3):
 		""" run belief propagation on the graph for MaxIters iterations
 		Args:
@@ -514,7 +457,6 @@ class SpEagle():
 				break
 		return delta
 
-
 	def classify(self):
 		""" read out the id of the maximal entry of each belief vector
 		Return:
@@ -550,22 +492,6 @@ class SpEagle():
 			posterior_med = np.exp(belief)
 			posterior = posterior_med / np.sum(posterior_med)
 
-			# if k == 'u1399':
-			#     print('u1399')
-			#     print(belief)
-			#     print(posterior_med)
-			#     print(np.sum(posterior_med))
-			#     print(posterior)
-
-
-			# if k == 'u6426':
-			#     print('u6426')
-			#     print(belief)
-			#     print(posterior_med)
-			#     print(np.sum(posterior_med))
-			#     print(posterior)
-
-
 			if node_type == 'review':
 				reviewBelief[review_id] = posterior[1]
 			elif node_type == 'user':
@@ -576,53 +502,3 @@ class SpEagle():
 				continue
 
 		return userBelief, reviewBelief, prodBelief
-
-
-# testing SpEagle
-
-if __name__ == '__main__':
-	prefix = '/Users/dozee/Desktop/Reseach/Spam_Detection/Dataset/YelpChi/'
-	metadata_filename = prefix + 'metadata.gz'
-
-	# prior file names
-	user_prior_filename = prefix + 'UserPriors.pickle'
-	prod_prior_filename = prefix + 'ProdPriors.pickle'
-	review_prior_filename = prefix + 'ReviewPriors.pickle'
-
-	# read the graph and node priors
-	user_product_graph, product_user_graph = read_graph_data(metadata_filename)
-
-	with open(user_prior_filename, 'rb') as f:
-		user_priors = pickle.load(f)
-
-	with open(prod_prior_filename, 'rb') as f:
-		prod_priors = pickle.load(f)
-
-	with open(review_prior_filename, 'rb') as f:
-		review_priors = pickle.load(f)
-
-	# print(user_priors)
-	# set up edge potentials
-	'''
-	User and Review potential
-		[1,0]
-		[0,1]
-	Reviewer and Review potential
-		[1 - eps, eps]
-		[eps, 1 - eps]
-	'''
-	numerical_eps = 1e-5
-	user_review_potential = np.log(np.array([[1 - numerical_eps, numerical_eps], [numerical_eps, 1 - numerical_eps]]))
-	eps = 0.1
-	review_product_potential = np.log(np.array([[1 - eps, eps], [eps, 1 - eps]]))
-
-	potentials = {'u_r': user_review_potential, 'r_u': user_review_potential,
-				  'r_p': review_product_potential, 'p_r': review_product_potential}
-
-	model = SpEagle(user_product_graph, [user_priors, prod_priors, review_priors], potentials, max_iters=100)
-	# model.output_graph()
-	model.schedule()
-	model.run_bp()
-# predictions = model.classify()
-# with open(prediction_filename, 'wb') as f:
-#	pickle.dump(predictions, f)

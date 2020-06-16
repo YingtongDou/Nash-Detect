@@ -1,9 +1,9 @@
-import sys
-sys.path.insert(0, '../Utils')
-from iohelper import *
+from Utils.iohelper import *
 import random as rd
 
-
+"""
+	The implementation of the Random attack.
+"""
 
 def random_post(c, t, r, p):
 	"""
@@ -37,4 +37,5 @@ def random_post(c, t, r, p):
 		print('Total number of selected unique accounts:: %d' %(unique))
 
 		account_log = account_log + selected_spammers
+
 	return added_edges, user_product_graph

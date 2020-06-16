@@ -3,17 +3,18 @@
 # which returns ((rowSet, colSet), score) for the most suspicious block.
 
 from __future__ import division
-
 import random
-
-import numpy as np
-from MinTree import MinTree
 from scipy import sparse
+import numpy as np
 
+from Detector.MinTree import MinTree
 
-# np.set_printoptions(threshold='nan')
-# np.set_printoptions(linewidth=160)
-
+"""
+	Fraudar Implementation
+	Code is modified based on the implementation by authors
+	https://bhooi.github.io/projects/fraudar/index.html
+	Paper: FRAUDAR: Bounding Graph Fraud in the Face of Camouflage, KDD'16  
+"""
 
 # given a list of lists where each row is an edge, this returns the sparse matrix representation of the data.
 # @profile

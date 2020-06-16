@@ -2,6 +2,15 @@
 # or modify any of the degrees, each in logarithmic time. It works by creating a binary tree with the 
 # given elements in the leaves, where each internal node stores the min of its two children. 
 import math
+
+"""
+	Class related to Fraudar implementation 
+	Code is modified based on the implementation by authors
+	https://bhooi.github.io/projects/fraudar/index.html
+	Paper: FRAUDAR: Bounding Graph Fraud in the Face of Camouflage, KDD'16 
+"""
+
+
 class MinTree:
     def __init__(self, degrees):
         self.input_length = len(degrees)

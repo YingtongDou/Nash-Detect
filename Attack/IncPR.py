@@ -1,16 +1,20 @@
-from yelpFeatureExtraction import *
+from Utils.yelpFeatureExtraction import *
+import time
+
+"""
+	The implementation of the IncPR attack.
+"""
 
 
-def pr_evasion(user_product_graph, product_user_graph, priors, c, r, t, feature_config):
+def pr_evasion(user_product_graph, product_user_graph, c, r, t, feature_config):
 	"""
 	Args:
 		user_product_graph: key = user_id, value = list of review tuples
-		product_product_graph: key = product_id, value = list of review tuples
-		priors: node priors
+		product_user_graph: key = product_id, value = list of review tuples
 		c: list of controlled accounts
 		r: number of reviews to be posted each account
 		t: target list
-		feature_config:
+		feature_config: feature configuration file
 	"""
 
 	# total number of spams posted 
@@ -73,7 +77,7 @@ def pr_evasion(user_product_graph, product_user_graph, priors, c, r, t, feature_
 		
 		t1 = time.time()
 		
-		print('Time consumed: %s' %str(t1-t0))
+		print('Time consumed: {}'.format(str(t1-t0)))
 		print('\n---------------------------------\n')
 
 	return added_edges, user_product_graph
