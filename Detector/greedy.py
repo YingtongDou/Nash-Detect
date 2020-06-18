@@ -6,8 +6,11 @@ from __future__ import division
 import random
 from scipy import sparse
 import numpy as np
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
 
 from Detector.MinTree import MinTree
+
 
 """
 	Fraudar Implementation

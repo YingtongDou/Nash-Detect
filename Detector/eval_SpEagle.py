@@ -1,7 +1,11 @@
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
+
 from Utils.iohelper import *
 from Utils.eval_helper import *
 from Detector.SpEagle import *
 from Utils.yelpFeatureExtraction import *
+
 
 """
 	SpEagle spam detection performance evaluation.
@@ -50,7 +54,7 @@ def runSpEagle(new_priors, user_product_graph):
 if __name__ == '__main__':
 
 	# dataset source
-	dataset_name = 'YelpChi'
+	dataset_name = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
 	prefix = 'Yelp_Dataset/' + dataset_name + '/'
 	metadata_filename = prefix + 'metadata.gz'
 
@@ -71,9 +75,11 @@ if __name__ == '__main__':
 	rpriors = feature_extractor.calculateNodePriors(review_feature_list, ReviewFeatures, feature_config)
 	priors = [upriors, rpriors, ppriors]
 
+	# run SpEagle model
 	model = runSpEagle(priors, user_product_graph)
 	userBelief, reviewBelief, _ = model.classify()
 
+	# performance evaluation
 	review_AUC, review_AP = evaluate(review_ground_truth, reviewBelief)
 	print('review AUC = {}'.format(review_AUC))
 	print('review AP  = {}'.format(review_AP))

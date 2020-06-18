@@ -1,9 +1,14 @@
+import pickle
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
+
 from Utils.iohelper import *
 from Attack.IncBP import bp_evasion
 from Attack.IncDS import ds_evasion
 from Attack.IncPR import pr_evasion
 from Attack.Random import random_post
 from Utils.yelpFeatureExtraction import *
+
 
 """
 	Generating reviews for different spamming attack strategies.
@@ -13,18 +18,17 @@ from Utils.yelpFeatureExtraction import *
 if __name__ == '__main__':
 
 	# initialize the attack setting
-	dataset = 'YelpZip'  # YelpChi, YelpNYC, YelpZip
-	attack = 'Random'  # IncBP, IncDS, IncPR, Random, Singleton
+	dataset = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
+	attack = 'IncBP'  # IncBP, IncDS, IncPR, Random, Singleton
 	prefix = 'Yelp_Dataset/' + dataset + '/'
 	metadata_filename = prefix + 'metadata.gz'
-	training = False  # False, True
 	exp_setting = {'YelpChi': (100, 30), 'YelpNYC': (400, 120), 'YelpZip': [700, 600]}
 	accounts, targets = exp_setting[dataset]
 
-	print('Executing {} attack on {}... Training is {}'.format(attack, dataset, training))
+	print('Executing {} attack on {}...'.format(attack, dataset))
 
 	# load the graph
-	user_product_graph, product_user_graph = read_graph_data(metadata_filename, training=training)
+	user_product_graph, product_user_graph = read_graph_data(metadata_filename)
 
 	# feature and prior calculation
 	feature_suspicious_filename = 'Utils/feature_configuration.txt'
@@ -49,10 +53,7 @@ if __name__ == '__main__':
 	sorted_user_list = sorted(user_list, reverse=True, key=lambda x: x[1])
 
 	# select the set of target products
-	if training:
-		new_businesses = [product[0] for product in sorted_product_list[-targets:]]
-	else:
-		new_businesses = [product[0] for product in sorted_product_list[-2 * targets:]]
+	new_businesses = [product[0] for product in sorted_product_list[-targets:]]
 
 	# select the set of controlled elite accounts
 	elite_spammers = []
@@ -63,17 +64,12 @@ if __name__ == '__main__':
 		else:
 			if len(user_product_graph[user[0]]) >= 10:
 				elite_spammers.append(user[0])
-		if training and len(elite_spammers) == accounts:
+		if len(elite_spammers) == accounts:
 			break
 
 	r = 15  # number of reviews per target
-	if training:
-		c = elite_spammers  # controlled accounts
-		t = new_businesses  # target products
-	else:
-		# select testing accounts and targets
-		c = elite_spammers[accounts:2 * accounts]
-		t = new_businesses[targets:]
+	c = elite_spammers  # controlled accounts
+	t = new_businesses  # target products
 
 	if attack == 'IncBP':
 		added_edges, _, _ = bp_evasion(user_product_graph, product_user_graph, priors, c, r, t, feature_config)

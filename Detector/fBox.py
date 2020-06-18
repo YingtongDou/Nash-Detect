@@ -3,6 +3,7 @@ from numpy.linalg import *
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import svds
 
+
 """
 	Implement the fBox detector
 	Paper: Spotting Suspicious Link Behavior with fBox- An Adversarial Perspective, ICDM'17

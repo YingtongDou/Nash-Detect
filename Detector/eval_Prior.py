@@ -1,7 +1,10 @@
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
 
 from Utils.iohelper import *
 from Utils.eval_helper import *
 from Utils.yelpFeatureExtraction import *
+
 
 """
 	Prior spam detection performance evaluation.
@@ -9,7 +12,7 @@ from Utils.yelpFeatureExtraction import *
 
 
 if __name__ == '__main__':
-	dataset_name = 'YelpChi'
+	dataset_name = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
 	prefix = 'Yelp_Dataset/' + dataset_name + '/'
 	metadata_filename = prefix + 'metadata.gz'
 
@@ -33,6 +36,7 @@ if __name__ == '__main__':
 	# normalize the review prior as the review suspicious belief
 	reviewBelief = scale_value(rpriors)
 
+	# performance evaluation
 	review_AUC, review_AP = evaluate(review_ground_truth, reviewBelief)
 	print('review AUC = {}'.format(review_AUC))
 	print('review AP  = {}'.format(review_AP))

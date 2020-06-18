@@ -1,5 +1,9 @@
-from Utils.yelpFeatureExtraction import *
 import time
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
+
+from Utils.yelpFeatureExtraction import *
+
 
 """
 	The implementation of the IncPR attack.

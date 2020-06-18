@@ -1,8 +1,11 @@
 import time
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
 
 from Detector.gang import *
 from Utils.eval_helper import *
 from Utils.yelpFeatureExtraction import *
+
 
 """
 	The implementation of the IncBP attack.

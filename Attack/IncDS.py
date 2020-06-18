@@ -1,8 +1,6 @@
 import copy
 import time
 
-from Utils.iohelper import *
-from Utils.yelpFeatureExtraction import *
 
 """
 	The implementation of the IncDS attack.

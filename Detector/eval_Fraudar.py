@@ -1,5 +1,5 @@
-import numpy as np
-from sklearn.metrics import auc
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
 
 from Utils.eval_helper import *
 from Utils.iohelper import *
@@ -111,7 +111,7 @@ def runFraudar(new_priors, user_product_graph):
 
 if __name__ == '__main__':
 
-	dataset_name = 'YelpChi'
+	dataset_name = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
 	prefix = 'Yelp_Dataset/' + dataset_name + '/'
 	metadata_filename = prefix + 'metadata.gz'
 

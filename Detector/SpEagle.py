@@ -2,6 +2,7 @@ from heapq import *
 import numpy as np
 from scipy.special import logsumexp
 
+
 """
 	Implement SpEagle on a User-Review-Product graph.
 	Paper: Collective Opinion Spam Detection: Bridging Review Networks and Metadata, KDD'15

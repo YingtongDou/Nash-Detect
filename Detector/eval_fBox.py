@@ -1,10 +1,12 @@
 from math import *
-import numpy as np
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
 
 from Utils.iohelper import *
 from Utils.yelpFeatureExtraction import *
 from Utils.eval_helper import *
 from Detector.fBox import *
+
 
 """
 	fBox spam detection performance evaluation.
@@ -64,7 +66,7 @@ def runfBox(new_priors, user_product_graph):
 
 if __name__ == '__main__':
 
-	dataset_name = 'YelpChi'
+	dataset_name = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
 	prefix = 'Yelp_Dataset/' + dataset_name + '/'
 	metadata_filename = prefix + 'metadata.gz'
 

@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
+
 from Utils.iohelper import *
 from Utils.eval_helper import *
 from Detector.gang import *
@@ -25,7 +28,7 @@ def runGANG(priors, user_product_graph, product_user_graph, user_ground_truth):
 
 
 if __name__ == '__main__':
-	dataset_name = 'YelpChi'
+	dataset_name = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
 	prefix = 'Yelp_Dataset/' + dataset_name + '/'
 	metadata_filename = prefix + 'metadata.gz'
 
@@ -52,6 +55,7 @@ if __name__ == '__main__':
 	userBelief, _, reviewBelief = model.classify()
 	reviewBelief = scale_value(reviewBelief)
 
+	# performance evaluation
 	review_AUC, review_AP = evaluate(review_ground_truth, reviewBelief)
 	print('review AUC = {}'.format(review_AUC))
 	print('review AP  = {}'.format(review_AP))

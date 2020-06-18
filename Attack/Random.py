@@ -1,9 +1,14 @@
-from Utils.iohelper import *
 import random as rd
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
+
+from Utils.iohelper import *
+
 
 """
 	The implementation of the Random attack.
 """
+
 
 def random_post(c, t, r, p):
 	"""

@@ -1,10 +1,13 @@
 import random
 from scipy.sparse import lil_matrix
 import numpy as np
+import sys
+sys.path.insert(0, sys.path[0] + '/..')
 
 from Utils.eval_helper import *
 from Utils.iohelper import *
 from Utils.yelpFeatureExtraction import *
+
 
 """
 	Implement GANG on a User-Review-Product graph.

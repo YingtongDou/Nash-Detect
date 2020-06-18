@@ -3,6 +3,7 @@
 # given elements in the leaves, where each internal node stores the min of its two children. 
 import math
 
+
 """
 	Class related to Fraudar implementation 
 	Code is modified based on the implementation by authors
