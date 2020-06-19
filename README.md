@@ -46,13 +46,13 @@ To experimental settings and model parameters can be found at the beginning of t
 The repository is organized as follows:
 - `Attack/` contains the implementations of four spamming attack strategies, the `Singleton` attack is implemented in `attack_generation.py`;
 - `Detector/` contains the implementations and evaluations of five spam detectors;
-- `Training/` contains generated fake reviews for training;
 - `Testing/` contains generated fake reviews for testing;
+- `Training/` contains generated fake reviews for training;
 - `Utils/` contains:
     * functions for loading graphs/features from dataset/manifest files  (`iohelper.py`);
     * utility functions for training and testing (`eval_helper.py`);
     * functions for extracting and updating features and prior beliefs (`yelpFeatureExtraction.py`);
-    * the manifest file for features (`feature_configuration.py`);
+    * the manifest file for features (`feature_configuration.py`).
 
 ## Citation
 ```bibtex
