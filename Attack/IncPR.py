@@ -1,6 +1,7 @@
 import time
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Utils.yelpFeatureExtraction import *
 

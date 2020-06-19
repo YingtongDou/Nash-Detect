@@ -2,7 +2,8 @@ import random
 from scipy.sparse import lil_matrix
 import numpy as np
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Utils.eval_helper import *
 from Utils.iohelper import *

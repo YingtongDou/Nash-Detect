@@ -1,6 +1,7 @@
 from math import *
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Utils.iohelper import *
 from Utils.yelpFeatureExtraction import *
@@ -67,7 +68,7 @@ def runfBox(new_priors, user_product_graph):
 if __name__ == '__main__':
 
 	dataset_name = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
-	prefix = 'Yelp_Dataset/' + dataset_name + '/'
+	prefix = '../Yelp_Dataset/' + dataset_name + '/'
 	metadata_filename = prefix + 'metadata.gz'
 
 	# load graph and label
@@ -75,7 +76,7 @@ if __name__ == '__main__':
 	user_ground_truth, review_ground_truth = create_ground_truth(user_product_graph)
 
 	# feature and prior calculation
-	feature_suspicious_filename = 'Utils/feature_configuration.txt'
+	feature_suspicious_filename = '../Utils/feature_configuration.txt'
 	review_feature_list = ['RD', 'EXT', 'EXT', 'DEV', 'ETF', 'ISR']
 	user_feature_list = ['MNR', 'PR', 'NR', 'avgRD', 'BST', 'ERD', 'ETG']
 	product_feature_list = ['MNR', 'PR', 'NR', 'avgRD', 'ERD', 'ETG']

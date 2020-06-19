@@ -1,7 +1,8 @@
 import copy as cp
 import pickle
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Utils.eval_helper import *
 from Utils.iohelper import *

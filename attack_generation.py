@@ -1,6 +1,7 @@
 import pickle
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Utils.iohelper import *
 from Attack.IncBP import bp_evasion
@@ -22,7 +23,7 @@ if __name__ == '__main__':
 	attack = 'IncBP'  # IncBP, IncDS, IncPR, Random, Singleton
 	prefix = 'Yelp_Dataset/' + dataset + '/'
 	metadata_filename = prefix + 'metadata.gz'
-	exp_setting = {'YelpChi': (100, 30), 'YelpNYC': (400, 120), 'YelpZip': [700, 600]}
+	exp_setting = {'YelpChi': (100, 30), 'YelpNYC': (400, 120), 'YelpZip': (700, 600)}
 	accounts, targets = exp_setting[dataset]
 
 	print('Executing {} attack on {}...'.format(attack, dataset))

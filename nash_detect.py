@@ -5,7 +5,8 @@ import time
 import numpy as np
 from scipy.special import expit
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Detector.eval_Fraudar import *
 from Detector.eval_GANG import *

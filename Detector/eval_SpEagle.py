@@ -1,5 +1,6 @@
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Utils.iohelper import *
 from Utils.eval_helper import *
@@ -55,14 +56,14 @@ if __name__ == '__main__':
 
 	# dataset source
 	dataset_name = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
-	prefix = 'Yelp_Dataset/' + dataset_name + '/'
+	prefix = '../Yelp_Dataset/' + dataset_name + '/'
 	metadata_filename = prefix + 'metadata.gz'
 
 	user_product_graph, product_user_graph = read_graph_data(metadata_filename)
 	user_ground_truth, review_ground_truth = create_ground_truth(user_product_graph)
 
 	# feature and prior calculation
-	feature_suspicious_filename = 'Utils/feature_configuration.txt'
+	feature_suspicious_filename = '../Utils/feature_configuration.txt'
 	review_feature_list = ['RD', 'EXT', 'EXT', 'DEV', 'ETF', 'ISR']
 	user_feature_list = ['MNR', 'PR', 'NR', 'avgRD', 'BST', 'ERD', 'ETG']
 	product_feature_list = ['MNR', 'PR', 'NR', 'avgRD', 'ERD', 'ETG']

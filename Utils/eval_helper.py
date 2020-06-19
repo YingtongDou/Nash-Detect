@@ -2,7 +2,8 @@ import copy as cp
 from sklearn.metrics import average_precision_score
 from sklearn.metrics import roc_auc_score
 import sys
-sys.path.insert(0, sys.path[0] + '/..')
+import os
+sys.path.insert(0, os.path.abspath('../'))
 
 from Utils.yelpFeatureExtraction import *
 from Utils.iohelper import *
