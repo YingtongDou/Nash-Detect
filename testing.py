@@ -144,7 +144,7 @@ if __name__ == '__main__':
 	metadata_filename = prefix + 'metadata.gz'
 	user_product_graph, prod_user_graph = read_graph_data(metadata_filename)
 
-	with open(setting5, 'rb') as f:
+	with open(setting1, 'rb') as f:
 		evasions = pickle.load(f)
 		targets = evasions[1]
 

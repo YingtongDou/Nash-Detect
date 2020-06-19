@@ -21,10 +21,12 @@ if __name__ == '__main__':
 	# initialize the attack setting
 	dataset = 'YelpChi'  # YelpChi, YelpNYC, YelpZip
 	attack = 'IncBP'  # IncBP, IncDS, IncPR, Random, Singleton
+	mode = 'Training' # Training, Testing
 	prefix = 'Yelp_Dataset/' + dataset + '/'
 	metadata_filename = prefix + 'metadata.gz'
 	exp_setting = {'YelpChi': (100, 30), 'YelpNYC': (400, 120), 'YelpZip': (700, 600)}
 	accounts, targets = exp_setting[dataset]
+
 
 	print('Executing {} attack on {}...'.format(attack, dataset))
 
@@ -65,11 +67,14 @@ if __name__ == '__main__':
 		else:
 			if len(user_product_graph[user[0]]) >= 10:
 				elite_spammers.append(user[0])
-		if len(elite_spammers) == accounts:
+		if mode == 'Training' and len(elite_spammers) == accounts:
 			break
 
 	r = 15  # number of reviews per target
-	c = elite_spammers  # controlled accounts
+	if mode == 'Training':
+		c = elite_spammers  # controlled elite accounts for training
+	else:
+		c = elite_spammers[accounts:2*accounts]  # controlled elite accounts for testing
 	t = new_businesses  # target products
 
 	if attack == 'IncBP':
@@ -92,6 +97,6 @@ if __name__ == '__main__':
 	print(len(added_edges))
 
 	# save the generated reviews for corresponding attack
-	with open('Testing/' + dataset + '/' + attack + '.pickle', 'wb') as f:
+	with open(mode + '/' + dataset + '/' + attack + '.pickle', 'wb') as f:
 		pickle.dump([c, t, added_edges], f)
 	f.close()
