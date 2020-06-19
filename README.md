@@ -57,7 +57,7 @@ The repository is organized as follows:
 ## Citation
 ```bibtex
 @inproceedings{dou2020robust,
-  title={Robust Detection of Adaptive Spammers by Nash Reinforcement Learning},
+  title={Robust Spammer Detection by Nash Reinforcement Learning},
   author={Dou, Yingtong and Ma, Guixiang and Yu, Philip S and Xie, Sihong},
   booktitle={Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining},
   year={2020}
