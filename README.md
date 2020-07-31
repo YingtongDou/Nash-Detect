@@ -1,9 +1,7 @@
 # Nash-Detect
 
 Code for KDD 2020 paper **Robust Spammer Detection by Nash Reinforcement Learning**.  
-
-[Yingtong Dou](http://ytongdou.com/), [Guixiang Ma](https://scholar.google.com/citations?user=CbKihaUAAAAJ&hl=en), [Philip S. Yu](https://www.cs.uic.edu/PSYu/), [Sihong Xie](http://www.cse.lehigh.edu/~sxie/)  
-
+[Yingtong Dou](http://ytongdou.com/), [Guixiang Ma](https://scholar.google.com/citations?user=CbKihaUAAAAJ&hl=en), [Philip S. Yu](https://www.cs.uic.edu/PSYu/), [Sihong Xie](http://www.cse.lehigh.edu/~sxie/).  
 \[[Paper](http://arxiv.org/abs/2006.06069)\]\[[Slides](http://ytongdou.com/files/kdd20slides.pdf)\]\[[Video](https://youtu.be/Pa13fabSGVw)\]\[[Toolbox](https://github.com/safe-graph/UGFraud)\]\[[Chinese Blog](https://mp.weixin.qq.com/s?__biz=MzU1Mjc5NTg5OQ==&mid=2247485268&idx=1&sn=451d137496829d1405c28808ec0bb0b2&chksm=fbfdecc0cc8a65d651600a437043cbb5483bfa16e35c3b1cb3ca60d7ac47e64a3bdd514e357f&token=1158859151&lang=zh_CN#rd)\]
 
 ## Overview
