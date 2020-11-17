@@ -42,9 +42,9 @@ To run the code, you need to have **Python 3.6** or later version.
 4. Run `attack_generation.py` with `mode = "Testing"` to generate fake reviews for testing
 5. Run `testing.py` to test the performance of the optimal detector trained by Nash-Detect and other baselines
 
-To facilitate the training and testing, we have stored all generated fake reviews in directories `/Training` and `/Testing`. So you can skip Step 1 and 4 to play the game and evaluation code directly. Moreover, you can play each single detector using the `eval_XXX.py` under the `/Detector` repository or using our [UGFraud](https://github.com/safe-graph/UGFraud) toolbox.
+To facilitate the training and testing, we have stored all generated fake reviews in directories `/Training` and `/Testing`. So you can skip Steps 1 and 4 to play the game and evaluation code directly. Moreover, you can play each single detector using the `eval_XXX.py` under the `/Detector` repository or using our [UGFraud](https://github.com/safe-graph/UGFraud) toolbox.
 
-To experimental settings and model parameters can be found at the beginning of the `main` functions of `training.py` and `testing.py`.
+The experimental settings and model parameters can be found at the beginning of the `main` functions of `training.py` and `testing.py`.
 
 ### Repo Structure
 The repository is organized as follows:
